@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+       
+        .p{color: blue}
+       
+        /* Create two equal columns that floats next to each other */
+        .column {
+            float: left;
+            width: 30%;
+        }
+       
+        /*  Clear floats after the columns*/
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+    </style>
+    <head>
+        <title>Zone prof : recherche du cours</title>
+    </head>
+   
+    <body>
+        <form action = "http://localhost:5000/formulaire_prof" method = "post">
+            <h2><b>Recherche du cours</b> </h2>
+            <p>
+                <p>Code module : <select name = "code_module">
+                    {% for item in dic.code_module %}
+                    <option value="{{item}}">{{item}}</option>
+                    {% endfor %}
+                </select></p>
+                <p>Code presentation : <select name = "code_presentation">
+                    {% for item in dic.code_presentation %}
+                    <option value="{{item}}">{{item}}</option>
+                    {% endfor %}
+                </select></p>
+                <p>Temps - avancée dans le module : <select name = "date_perc">
+                    {% for item in dic.date_perc %}
+                    <option value="{{item}}">{{item}}</option>
+                    {% endfor %}
+                </select></p>
+            </p>
+        <input type = "submit" value = "Soumettre" />
+      </form>
+   </body>
+</html>

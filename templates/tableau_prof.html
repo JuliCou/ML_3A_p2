@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+    <style>
+        
+        div{
+            width: 80%;
+            margin: 20px auto; /*Centre les div dans la page*/
+        }
+
+        .arrondi1{
+            border: 2px solid black;
+            border-radius : 30px / 20px;
+            background-color: rgb(87, 172, 80); /*Fond gris*/
+        }
+        .arrondi2{
+            border: 2px solid black;
+            border-radius : 30px / 20px;
+            background-color: rgb(207, 86, 92); /*Fond gris*/
+        }
+    </style>
+    <head>
+        <meta charset="utf-8">
+        <title>Zone prof : Tableau de bord</title>
+        <!-- Favicons -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <!-- <script src="../static/js/file.js"></script> -->
+    
+    </head>
+ 
+    <body class="bg-light">
+        <form action = "http://localhost:5000/formulaire_prof" method = "post">
+            <div>
+                <h1 style="display: inline-block; letter-spacing: 0em; font-size: 2.4rem; font-weight: 700; line-height: 2">
+                    Prédictions sur le résultat des élèves à {{donnees.date}}% du cours {{donnees.code_module}} à {{donnees.code_presentation}}
+                </h1>
+            </div>
+            
+            <div class="flex-container d-flex">
+                <div class="row justify-content-center align-self-center flex-fill">
+                {% for eleve in data_alerte %}
+                <div class="card bg-warning px-3 pb-2 pt-3 mx-3 my-3" style="width: 18rem;">
+                    <p>Identifiant de l'élève : {{eleve.id_student}}</p>
+                    <p>Prédiction de réussite : {{eleve.predicted_result}}</p>
+                    <p>Résultat final : {{eleve.final_result}}</p>
+                </div>
+                {% endfor %}
+                {% for eleve in data_OK %}
+                <div class="card bg-success px-3 pb-2 pt-3 mx-3 my-3" style="width: 18rem;">
+                    <p>Identifiant de l'élève : {{eleve.id_student}}</p>
+                    <p>Prédiction de réussite : {{eleve.predicted_result}}</p>
+                    <p>Résultat final : {{eleve.final_result}}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <input type = "submit" value = "Soumettre" />
+      </form>
+   </body>
+</html>

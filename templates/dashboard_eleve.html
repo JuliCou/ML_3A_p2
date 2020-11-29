@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+       
+        .p{color: blue}
+       
+        /* Create two equal columns that floats next to each other */
+        .column {
+            float: left;
+            width: 30%;
+        }
+       
+        /*  Clear floats after the columns*/
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+    </style>
+    <head>
+        <title>Zone élève : recherche de l'identifiant</title>
+    </head>
+   
+    <body>
+        <form action = "http://localhost:5000/formulaire_eleve" method = "post">
+            <h2><b>Recherche de l'élève</b> </h2>
+            <p>
+                <p>Identifiant de l'élève :
+                    <input type="text" name="id_student" required></p>
+                </p>
+                <p>Temps - avancée dans le module : <select name = "date_perc">
+                    {% for item in dic.date_perc %}
+                    <option value="{{item}}">{{item}}</option>
+                    {% endfor %}
+                </select></p>
+                <p>Liste des identifiants d'élèves : </p>
+                {% for item in dic.id_student %}
+                {{item}}
+                {% endfor %}
+                <!-- <p>Identifiant élève : <select name = "id_student">
+                    {% for item in dic.id_student %}
+                    <option value="{{item}}">{{item}}</option>
+                    {% endfor %}
+                </select></p> -->
+            </p>
+        <input type = "submit" value = "Soumettre" />
+      </form>
+   </body>
+</html>
