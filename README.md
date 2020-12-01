@@ -6,12 +6,15 @@ Projet Machine Learning 3A
 # Contributors:
 
 Justine Coutelier
+
 Julie Courgibet
+
 Nicolas Glomot
 
 # Analysis dataframes - Features engineering
 
 code python: getting_main_dataframe.py
+
 Obtention fichier csv de plus de 6 millions de lignes
 
 # Machine learning
@@ -25,16 +28,27 @@ On obtient les scores de prédictions suivants (dataframe type 1 : données de c
 Les scores de précisions suivant ont été calculés en cross-validation (3 étapes). Modèle xgboost avec optimisation de paramètres :
 
 0% : type 1 précision = 0.5875166666666667 - type 2 précision : 0.6026751626336121
+
 10% : type 1 précision = 0.5913227568078973 - type 2 précision : 0.6007418735880748
+
 20% : type 1 précision = 0.6448313781656134 - type 2 précision : 0.6511824747784355
+
 30% : type 1 précision = 0.6890744753810236 - type 2 précision : 0.689902763999480
+
 40% : type 1 précision = 0.7259839367845765 - type 2 précision : 0.7281931271847806
+
 50% : type 1 précision = 0.7628942256217462 - type 2 précision : 0.7629861767392349
+
 60% : type 1 précision = 0.7958457338618671 - type 2 précision : 0.7970116105065767
+
 70% : type 1 précision = 0.7944650495139648 - type 2 précision : 0.7958457338618671
+
 80% : type 1 précision = 0.8431255165686132 - type 2 précision : 0.8435244044165594
+
 90% : type 1 précision = 0.8620560881509368 - type 2 précision : 0.8612890174456801
+
 100% : type 1 précision = 0.8697880356860684 - type 2 précision : 0.8693583609935804
+
 
 Pour 100%, la note d'examen n'est pas prise en compte.
 
