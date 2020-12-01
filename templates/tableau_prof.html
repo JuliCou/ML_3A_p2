@@ -68,6 +68,11 @@
                     {% for pb in eleve.proba %}
                         <p>{{pb.classe}} : {{pb.proba}}</p>
                     {% endfor %}
+                    <form action="http://localhost:5000/prof_voir_eleve" method="POST">
+                        <input type="hidden" name="data_eleve" value='{{eleve}}'>
+                        <input type="hidden" name="data_general" value='{{donnees}}'>
+                        <div class="col text-center"><input class="btn btn-link" type="submit" value="Voir plus"></div>
+                    </form>
                 </div>
                 {% endfor %}
             </div>

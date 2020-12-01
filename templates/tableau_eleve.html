@@ -21,33 +21,43 @@
             <div class="container d-flex h-100">
                 <div class="row justify-content-center align-self-center">
                     {% for cours in data_OK %}
-                    <div class="card bg-success px-3 pb-2 pt-3 mx-3 my-3" style="width: 25rem;">
-                        <p>Code module : {{cours.code_module}} </p>
-                        <p>Code presentation : {{cours.code_presentation}} </p>
-                        <p>Prédiction : {{cours.prediction}} </p>
-                        <p>Résultat final réel : {{cours.final_result}} </p>
-                        {% for pb in cours.proba %}
-                            <p>{{pb.classe}} : {{pb.proba}}</p>
-                        {% endfor %}   
-                    </div>
-                    <figure>
-                        <img src={{cours.f_importance.img}} width="700">
-                    </figure>
+                        <div class="card text-white bg-success px-3 pb-2 pt-3 mx-3 my-3" style="width: 25rem;">
+                            <p>Code module : {{cours.code_module}} </p>
+                            <p>Code presentation : {{cours.code_presentation}} </p>
+                            <p>Prédiction : {{cours.prediction}} </p>
+                            <p>Résultat final réel : {{cours.final_result}} </p>
+                            {% for pb in cours.proba %}
+                                <p>{{pb.classe}} : {{pb.proba}}</p>
+                            {% endfor %}   
+                        </div>
+                        <div class="card text-white bg-secondary px-3 pb-2 pt-3 mx-3 my-3" style="width: 25rem;">
+                            {% for element in cours.f_importance.liste %}
+                                <p>{{element.features}} : {{element.weights}}</p>
+                            {% endfor %}
+                        </div>
+                        <figure>
+                            <img src={{cours.f_importance.img}} width="700">
+                        </figure>
                     {% endfor %}
 
                     {% for cours in data_alerte %}
-                    <div class="card bg-warning px-3 pb-2 pt-3 mx-3 my-3" style="width: 25rem;">
-                        <p>Code module : {{cours.code_module}} </p>
-                        <p>Code presentation : {{cours.code_presentation}} </p>
-                        <p>Prédiction : {{cours.prediction}} </p>
-                        <p>Résultat final réel : {{cours.final_result}} </p>
-                        {% for pb in cours.proba %}
-                            <p>{{pb.classe}} : {{pb.proba}}</p>
-                        {% endfor %}
-                    </div>
-                    <figure>
-                        <img src={{cours.f_importance.img}}  width="700">
-                    </figure>
+                        <div class="card bg-warning px-3 pb-2 pt-3 mx-3 my-3" style="width: 25rem;">
+                            <p>Code module : {{cours.code_module}} </p>
+                            <p>Code presentation : {{cours.code_presentation}} </p>
+                            <p>Prédiction : {{cours.prediction}} </p>
+                            <p>Résultat final réel : {{cours.final_result}} </p>
+                            {% for pb in cours.proba %}
+                                <p>{{pb.classe}} : {{pb.proba}}</p>
+                            {% endfor %}
+                        </div>
+                        <div class="card text-white bg-secondary px-3 pb-2 pt-3 mx-3 my-3" style="width: 25rem;">
+                            {% for element in cours.f_importance.liste %}
+                                <p>{{element.features}} : {{element.weights}}</p>
+                            {% endfor %}
+                        </div>
+                        <figure>
+                            <img src={{cours.f_importance.img}} width="700">
+                        </figure>
                     {% endfor %}
                 </div>
             </div>

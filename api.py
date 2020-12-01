@@ -83,6 +83,8 @@ def formulaire_prof():
         students = studentInfo[(studentInfo.code_module==module)&(studentInfo.code_presentation==presentation)]
         dfStudents = dic_c_df[date][(studentInfo.code_module==module)&(studentInfo.code_presentation==presentation)]
         dfStudents = dic_df[date][dic_df[date]["_id"].isin(list(dfStudents["_id"]))]
+        if dfStudents.shape[0] == 0:
+            return render_template("page_erreur_prof.html")
         # Prédictions
         target_classes = dic_models[date].classes_
         predictions = dic_models[date].predict(dfStudents.drop(['final_result', '_id'], axis=1))
@@ -135,16 +137,25 @@ def formulaire_eleve():
             f_importance = []
             for j in range(len(predictions)):
                 expl = eli5.explain_prediction_xgboost(dic_models[date], donneesEleve.drop(['final_result', '_id'], axis=1).iloc[j])
-                features_importance_eleve = {"Features" : [], "Weights" : [], "img" : ""}
+                features_importance_eleve = {"liste" : [], "img" : ""}
+                features_importance_dic = {"Features":[], "Weights":[]}
                 for i in range(len(expl.targets)):
                     if expl.targets[i].target == predictions[j]:
                         posFeatures = expl.targets[i].feature_weights.pos[:4]
                         negFeatures = expl.targets[i].feature_weights.neg[:3]
-                        features_importance_eleve["Features"] += [posFeatures[k].feature for k in range(1, len(posFeatures))]
-                        features_importance_eleve["Features"] += [negFeatures[k].feature for k in range(0, len(negFeatures))]
-                        features_importance_eleve["Weights"] += [posFeatures[k].weight for k in range(1, len(posFeatures))]
-                        features_importance_eleve["Weights"] += [negFeatures[k].weight for k in range(0, len(negFeatures))]
-                feature_importance_df = pd.DataFrame(features_importance_eleve)
+                        biaisPos = 3
+                        for k in range(len(posFeatures)):
+                            if not "BIAS" in posFeatures[k].feature:
+                                features_importance_eleve["liste"].append({"features" : posFeatures[k].feature, "weights" : posFeatures[k].weight})
+                            else:
+                                biaisPos = k
+                        for k in range(len(negFeatures)):
+                            features_importance_eleve["liste"].append({"features" : negFeatures[k].feature, "weights" : negFeatures[k].weight})
+                        features_importance_dic["Features"] += [posFeatures[k].feature for k in range(0, len(posFeatures)) if k != biaisPos]
+                        features_importance_dic["Features"] += [negFeatures[k].feature for k in range(0, len(negFeatures))]
+                        features_importance_dic["Weights"] += [posFeatures[k].weight for k in range(0, len(posFeatures)) if k != biaisPos]
+                        features_importance_dic["Weights"] += [negFeatures[k].weight for k in range(0, len(negFeatures))]
+                feature_importance_df = pd.DataFrame(features_importance_dic)
                 fig = pyplot.figure(figsize=(15, 7))
                 fig = sns.barplot(x='Features', y="Weights", data=feature_importance_df)
                 nom_image = "fig" + str(j) + str(random.randint(0, 10)) + ".jpeg"
@@ -200,20 +211,25 @@ def prof_voir_eleve():
         # Learning analytics
         f_importance = []
         expl = eli5.explain_prediction_xgboost(dic_models[date], dfStudents.drop(['final_result', '_id'], axis=1).iloc[0])
-        features_importance_eleve = {"Features" : [], "Weights" : [], "img" : ""}
+        features_importance_eleve = {"liste":[], "img" : ""}
+        features_importance_dic = {"Features":[], "Weights":[]}
         for i in range(len(expl.targets)):
             if expl.targets[i].target == predictions[0]:
                 posFeatures = expl.targets[i].feature_weights.pos[:4]
                 negFeatures = expl.targets[i].feature_weights.neg[:3]
-                biaisPos = 0
+                biaisPos = 3
                 for k in range(len(posFeatures)):
-                    if "BIAS" in posFeatures[k].feature:
+                    if not "BIAS" in posFeatures[k].feature:
+                        features_importance_eleve["liste"].append({"features" : posFeatures[k].feature, "weights" : posFeatures[k].weight})
+                    else:
                         biaisPos = k
-                features_importance_eleve["Features"] += [posFeatures[k].feature for k in range(0, len(posFeatures)) if k != biaisPos]
-                features_importance_eleve["Features"] += [negFeatures[k].feature for k in range(0, len(negFeatures))]
-                features_importance_eleve["Weights"] += [posFeatures[k].weight for k in range(0, len(posFeatures)) if k != biaisPos]
-                features_importance_eleve["Weights"] += [negFeatures[k].weight for k in range(0, len(negFeatures))]
-        feature_importance_df = pd.DataFrame(features_importance_eleve)
+                for k in range(len(negFeatures)):
+                    features_importance_eleve["liste"].append({"features" : negFeatures[k].feature, "weights" : negFeatures[k].weight})
+                features_importance_dic["Features"] += [posFeatures[k].feature for k in range(0, len(posFeatures)) if k != biaisPos]
+                features_importance_dic["Features"] += [negFeatures[k].feature for k in range(0, len(negFeatures))]
+                features_importance_dic["Weights"] += [posFeatures[k].weight for k in range(0, len(posFeatures)) if k != biaisPos]
+                features_importance_dic["Weights"] += [negFeatures[k].weight for k in range(0, len(negFeatures))]
+        feature_importance_df = pd.DataFrame(features_importance_dic)
         fig = pyplot.figure(figsize=(15, 7))
         fig = sns.barplot(x='Features', y="Weights", data=feature_importance_df)
         nom_image = "fig0" + str(random.randint(0, 10)) + ".jpeg"
