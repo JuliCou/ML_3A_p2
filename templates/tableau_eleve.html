@@ -11,7 +11,7 @@
 </head>
    
     <body class="bg-light">
-        <form action = "http://localhost:5000/formulaire_prof" method = "post">
+        <form action = "http://localhost:5000/index" method = "get">
             <div>
                 <h1 style="display: inline-block; letter-spacing: 0em; font-size: 2.4rem; font-weight: 700; line-height: 2">
                     Prédictions pour l'élève {{data_eleve.id_student}} à {{data_eleve.date}}% du cours
@@ -26,18 +26,32 @@
                         <p>Code presentation : {{cours.code_presentation}} </p>
                         <p>Prédiction : {{cours.prediction}} </p>
                         <p>Résultat final réel : {{cours.final_result}} </p>
+                        {% for pb in cours.proba %}
+                            <p>{{pb.classe}} : {{pb.proba}}</p>
+                        {% endfor %}   
                     </div>
+                    <figure>
+                        <img src={{cours.f_importance.img}} width="700">
+                    </figure>
                     {% endfor %}
+
                     {% for cours in data_alerte %}
                     <div class="card bg-warning px-3 pb-2 pt-3 mx-3 my-3" style="width: 25rem;">
                         <p>Code module : {{cours.code_module}} </p>
                         <p>Code presentation : {{cours.code_presentation}} </p>
                         <p>Prédiction : {{cours.prediction}} </p>
                         <p>Résultat final réel : {{cours.final_result}} </p>
+                        {% for pb in cours.proba %}
+                            <p>{{pb.classe}} : {{pb.proba}}</p>
+                        {% endfor %}
                     </div>
+                    <figure>
+                        <img src={{cours.f_importance.img}}  width="700">
+                    </figure>
                     {% endfor %}
                 </div>
             </div>
+            <input type = "submit" value = "Revenir à l'accueil" />
         <!-- <input type = "submit" value = "Soumettre" /> -->
       </form>
    </body>

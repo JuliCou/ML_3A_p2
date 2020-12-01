@@ -30,13 +30,19 @@
     </head>
  
     <body class="bg-light">
-        <form action = "http://localhost:5000/formulaire_prof" method = "post">
             <div>
                 <h1 style="display: inline-block; letter-spacing: 0em; font-size: 2.4rem; font-weight: 700; line-height: 2">
                     Prédictions sur le résultat des élèves à {{donnees.date}}% du cours {{donnees.code_module}} à {{donnees.code_presentation}}
                 </h1>
             </div>
-            
+            <div class="flex-container d-flex">
+                <div class="row justify-content-center align-self-center flex-fill">
+                    <figure>
+                        <img src={{donnees.img}} width="700">
+                        <p>Précision du modèle pour les données affichées : {{donnees.precision}}</p>
+                    </figure>
+                </div>
+            </div>
             <div class="flex-container d-flex">
                 <div class="row justify-content-center align-self-center flex-fill">
                 {% for eleve in data_alerte %}
@@ -44,6 +50,14 @@
                     <p>Identifiant de l'élève : {{eleve.id_student}}</p>
                     <p>Prédiction de réussite : {{eleve.predicted_result}}</p>
                     <p>Résultat final : {{eleve.final_result}}</p>
+                    {% for pb in eleve.proba %}
+                        <p>{{pb.classe}} : {{pb.proba}}</p>
+                    {% endfor %}
+                    <form action="http://localhost:5000/prof_voir_eleve" method="POST">
+                        <input type="hidden" name="data_eleve" value='{{eleve}}'>
+                        <input type="hidden" name="data_general" value='{{donnees}}'>
+                        <div class="col text-center"><input class="btn btn-link" type="submit" value="Voir plus"></div>
+                    </form>
                 </div>
                 {% endfor %}
                 {% for eleve in data_OK %}
@@ -51,11 +65,12 @@
                     <p>Identifiant de l'élève : {{eleve.id_student}}</p>
                     <p>Prédiction de réussite : {{eleve.predicted_result}}</p>
                     <p>Résultat final : {{eleve.final_result}}</p>
+                    {% for pb in eleve.proba %}
+                        <p>{{pb.classe}} : {{pb.proba}}</p>
+                    {% endfor %}
                 </div>
                 {% endfor %}
             </div>
         </div>
-        <input type = "submit" value = "Soumettre" />
-      </form>
    </body>
 </html>
