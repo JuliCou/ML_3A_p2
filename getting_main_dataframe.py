@@ -250,14 +250,15 @@ for i in range(studentInfo.shape[0]):
                 dic['validation'].append(0)
 
 data2 = pd.DataFrame(dic)
-data2.to_csv("data_time.csv", index=False, header=True)
+# data2.to_csv("data_time.csv", index=False, header=True)
 
-
+# Getting data for student not present - pas de date
 data_time_agg = data2.groupby(["id_student", "code_module", "code_presentation"]).agg({"id_student":["count"]})
 data_time_agg.columns = ["nb"]
 data_time_agg = data_time_agg.reset_index()
 data_time_agg.shape
 
+# Recherche des étudiants non présents dans data2
 dic_not_present = {"id_student":[], "code_presentation":[], "code_module":[]}
 
 for i in range(studentInfo.shape[0]):
@@ -269,6 +270,7 @@ for i in range(studentInfo.shape[0]):
 not_present = pd.DataFrame(dic_not_present)
 not_present = not_present.merge(studentInfo, on=["id_student", "code_module", "code_presentation"], how="inner")
 
+# Calcul des features pour étudiants non présents dans data2
 for i in range(not_present.shape[0]):
     # Variables
     mod = not_present.code_module.iloc[i]
